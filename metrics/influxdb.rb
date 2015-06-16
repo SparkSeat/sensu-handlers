@@ -26,7 +26,14 @@ class SensuToInfluxDB < Sensu::Handler
       key = m[0].split('.', 2)[1]
       next unless key
       key.gsub!('.', '_')
-      value = m[1].to_f
+
+      # Convert numbers to floats, keep strings unchanged...
+      begin
+        value = Float(m[1])
+      rescue ArgumentError
+        value = m[1]
+      end
+
       mydata = { host: @event['client']['name'], value: value,
                  ip: @event['client']['address']
                }
