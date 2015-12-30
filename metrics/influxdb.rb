@@ -37,7 +37,7 @@ class SensuToInfluxDB < Sensu::Handler
       mydata = { host: @event['client']['name'], value: value,
                  ip: @event['client']['address']
                }
-      influxdb_data.write_point(key, mydata)
+      influxdb_data.write_point(key, values: mydata)
     end
   end
 end
